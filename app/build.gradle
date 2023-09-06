@@ -1,0 +1,38 @@
+plugins {
+  id 'com.android.application'
+  id 'org.jetbrains.kotlin.android'
+}
+
+android {
+  compileSdk 33
+  namespace "mwe.root"
+
+  defaultConfig {
+    applicationId "mwe.root"
+    minSdk 29
+    targetSdk 33
+    versionCode 1
+    versionName "1.0"
+  }
+  variantFilter {
+    it.ignore = !it.buildType.isDebuggable()
+  }
+  signingConfigs {
+    release {
+      storeFile file("dummy.keystore")
+      storePassword "123456"
+      keyAlias "alias"
+      keyPassword "123456"
+    }
+  }
+  buildTypes {
+    release {
+      signingConfig signingConfigs.release
+    }
+  }
+}
+
+dependencies {
+  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3"
+  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+}
