@@ -25,16 +25,6 @@ internal class MainActivity : Activity() {
         val exoPlayer = ExoPlayer.Builder(this)
             .setLooper(exoPlayerControlHandler.looper)
             .build()
-        exoPlayerControlHandler.post {
-            exoPlayer.apply {
-                addAnalyticsListener(DebugAnalyticsLister())
-                setMediaSource(concatenatingMediaSource)
-                playWhenReady = true
-                prepare()
-            }
-        }
-        concatenatingMediaSourceController =
-            ConcatenatingMediaSourceController(concatenatingMediaSource)
         val uriMediaSourceFactory = UriMediaSourceFactory(DefaultDataSource.Factory(this))
         onMediaSourceController {
             addMediaSourceSync(
@@ -46,6 +36,17 @@ internal class MainActivity : Activity() {
                 )
             )
         }
+        exoPlayerControlHandler.post {
+            exoPlayer.apply {
+                addAnalyticsListener(DebugAnalyticsLister())
+                setMediaSource(concatenatingMediaSource)
+                playWhenReady = true
+                prepare()
+                customLogD("Just called prepare")
+            }
+        }
+        concatenatingMediaSourceController =
+            ConcatenatingMediaSourceController(concatenatingMediaSource)
         onMediaSourceController {
             addMediaSourceSync(
                 1,

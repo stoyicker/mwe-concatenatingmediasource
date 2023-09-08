@@ -23,10 +23,12 @@ internal class ConcatenatingMediaSourceController(
         withContext(currentCoroutineContext()) {
             launch {
                 concatenatingMediaSource.addMediaSource(index, mediaSource, handler) {
+                    customLogD("Finished addition on for item id=${mediaSource.mediaItem.mediaId} index $index")
                     mutex.unlock()
                 }
             }
         }
+        customLogD("Waiting for addition for item id=${mediaSource.mediaItem.mediaId} index $index")
         mutex.lock()
         customLogD("Finished addMediaSource for item id=${mediaSource.mediaItem.mediaId} on index $index")
     }
@@ -35,10 +37,12 @@ internal class ConcatenatingMediaSourceController(
         withContext(currentCoroutineContext()) {
             launch {
                 concatenatingMediaSource.removeMediaSource(index, handler) {
+                    customLogD("Finished deletion for index $index")
                     mutex.unlock()
                 }
             }
         }
+        customLogD("Waiting for deletion for index $index")
         mutex.lock()
         customLogD("Finished removeMediaSourceSync on index $index")
     }
